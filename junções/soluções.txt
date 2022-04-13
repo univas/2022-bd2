@@ -1,0 +1,159 @@
+1)
+select titulo from projeto where extract(year from dataInicio) = 2020;
+
+2)
+--por ano
+select extract(year from dataInicio) as ano, count(titulo) from projeto group by ano;
+
+--por mês
+select extract(month from dataInicio) as mes, count(titulo) from projeto group by mes;
+
+3)
+select count(inscricao) as quantidade, sum(orcamento) as total, matProfessor
+from projeto
+group by matProfessor;
+
+--usando o nome do professor
+
+select count(inscricao) as quantidade, sum(orcamento) as total, nome
+from projeto
+join professor ON matricula = matProfessor
+group by nome;
+
+4)
+select nome, email, titulo
+from professor
+join projeto ON matricula = matProfessor
+where titulacao = 'doutor';
+
+5)
+select titulacao, count(inscricao) as qtdProjetos
+from professor
+join projeto ON matricula = matProfessor
+group by titulacao;
+
+6)
+select nome
+from professor
+join projeto ON matricula = matProfessor
+where extract(month from dataInicio) in (1,2,3);
+
+select nome
+from professor
+join projeto ON matricula = matProfessor
+where extract(month from dataInicio) <= 3;
+
+select nome
+from professor
+join projeto ON matricula = matProfessor
+where extract(month from dataInicio) between 1 and 3;
+
+7)
+select titulo, count(matAluno) as qtdAluno
+from projeto
+join equipe ON 	inscricao = codProjeto
+where datafimparticip is null
+group by titulo
+order by titulo;
+
+8)
+select curso.nome, avg(datafim-datainicio)
+from projeto
+join equipe ON inscricao = codProjeto
+join aluno ON matricula = matAluno
+join curso ON sigla = curso
+group by curso.nome;
+
+9)
+select aluno.nome, aluno.email, projeto.titulo
+from projeto
+join equipe ON inscricao = codProjeto
+join aluno ON matricula = matAluno
+where datafimparticip IS NULL;
+
+10)
+select count(matAluno), codProjeto
+from equipe
+where datafimparticip IS NULL
+group by codProjeto;
+
+select count(matAluno), titulo
+from equipe
+join projeto ON inscricao = codProjeto
+where datafimparticip IS NULL
+group by titulo;
+
+11)
+select count(matAluno) as qtd, extract(month from dataInicioParticip) as mes
+from equipe
+group by mes
+order by mes;
+
+12)
+select count(matAluno) as qtd, extract(month from dataFimParticip) as mes
+from equipe
+where dataFimParticip IS NOT NULL
+group by mes
+order by mes;
+
+13)
+select count(matAluno) as qtd, titulo
+from equipe
+join projeto ON inscricao = codProjeto
+where dataFimParticip IS NOT NULL
+group by titulo
+order by qtd desc;
+
+14)
+select avg(dataFimParticip - dataInicioParticip), titulo
+from equipe
+join projeto ON inscricao = codProjeto
+where dataFimParticip IS NOT NULL
+group by titulo;
+
+15)
+select (select count(matAluno) from equipe) / (select count(inscricao) from projeto);
+
+16)
+select titulo, S1.qtd::decimal / S2.qtd
+from projeto
+join (
+  select count(matAluno) as qtd, codProjeto
+  from Equipe
+  where dataFimParticip IS NOT NULL
+  group by codProjeto
+) S1 ON inscricao = S1.codProjeto
+left join (
+  select count(matAluno) as qtd, codProjeto
+  from Equipe
+  where dataFimParticip IS NULL
+  group by codProjeto
+) S2 ON inscricao = S2.codProjeto;
+
+
+17)
+select nome, count(matAluno) as qtdAluno
+from professor
+join Projeto ON matricula = matProfessor
+join Equipe ON inscricao = codProjeto
+where dataFimParticip IS NULL
+group by nome;
+
+18)
+select nome, count(matAluno) as qtdAluno
+from professor
+join Projeto ON matricula = matProfessor
+join Equipe ON inscricao = codProjeto
+where dataFimParticip IS NOT NULL
+group by nome
+order by qtdAluno DESC;
+
+
+19)
+select a.nome
+from professor
+join Projeto ON matricula = matProfessor
+join Equipe ON inscricao = codProjeto
+join Aluno a ON a.matricula = matAluno
+where dataFimParticip IS NULL AND titulacao = 'doutor';
+
