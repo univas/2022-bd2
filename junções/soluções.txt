@@ -157,3 +157,62 @@ join Equipe ON inscricao = codProjeto
 join Aluno a ON a.matricula = matAluno
 where dataFimParticip IS NULL AND titulacao = 'doutor';
 
+20)
+select distinct email
+from Aluno
+join Equipe ON matricula = matAluno
+where dataFimParticip IS NULL;
+
+21)
+select nome
+from Equipe
+join Aluno ON matricula = matAluno
+where dataFimParticip IS NULL
+group by nome, matAluno
+having count(codProjeto) = 1;
+
+22)
+select titulo, orcamento / count(matAluno)
+from Projeto
+join Equipe ON inscricao = codProjeto
+group by titulo
+order by titulo;
+
+--versão aninhada
+select titulo, orcamento / qtdAluno
+from Projeto
+join (
+	select codProjeto, count(matAluno) as qtdAluno
+	from Equipe
+	group by codProjeto
+) S1 ON inscricao = codProjeto
+order by titulo;
+
+23)
+select nome, titulo
+from Professor
+left join Projeto ON matricula = matProfessor
+where inscricao IS NULL;
+
+--usando NOT IN
+select nome from Professor
+where matricula NOT IN (
+	select matProfessor from Projeto
+)
+
+24)
+select nome, matAluno
+from Aluno
+left join Equipe ON matricula = matAluno
+where matAluno IS NULL;
+
+25)
+(select titulo, orcamento from projeto order by orcamento LIMIT 3)
+UNION
+(select titulo, orcamento from projeto order by orcamento DESC LIMIT 3)
+order by orcamento;
+
+--cuidado: o UNION exige que as consultas tenham a mesma quantidade de colunas, com os mesmos tipos
+
+26)
+
