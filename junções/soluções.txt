@@ -215,4 +215,21 @@ order by orcamento;
 --cuidado: o UNION exige que as consultas tenham a mesma quantidade de colunas, com os mesmos tipos
 
 26)
+select nome, dataInicioParticip, dataInicio, inscricao
+from Aluno
+join Equipe ON matricula = matAluno
+join Projeto ON inscricao = codProjeto
+where dataInicioParticip = dataInicio AND dataFimParticip IS NULL;
+
+INSERT INTO equipe (codProjeto,matAluno,dataInicioParticip,dataFimParticip) 
+            VALUES (1, 8, '2020-01-01', null); -- ainda participa
+
+INSERT INTO equipe (codProjeto,matAluno,dataInicioParticip,dataFimParticip) 
+            VALUES (1, 7, '2020-01-01', '2020-01-02'); -- ainda participa
+
+27)
+
+select nome from Professor where titulacao IN (
+	select titulacao from Professor where nome = 'Roberto'
+);
 
