@@ -58,4 +58,10 @@ public class Cargo {
 	public void setType(TipoCargo type) {
 		this.type = type;
 	}
+
+	@Override
+	public String toString() {
+		return "Cargo [codigo=" + codigo + ", nome=" + nome + ", salario=" + salario + ", type=" + type + "]";
+	}
+	
 }
