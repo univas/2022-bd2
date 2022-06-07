@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -31,6 +32,10 @@ public class Funcionario implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "USUARIO_FK")
 	private Usuario usuario;
+	
+	@ManyToOne //o fetch padrão é EAGER
+	@JoinColumn(name="CARGO_FK")
+	private Cargo cargo;
 
 	public Funcionario() {
 	}
@@ -83,6 +88,14 @@ public class Funcionario implements Serializable {
 		this.usuario = usuario;
 	}
 
+	public Cargo getCargo() {
+		return cargo;
+	}
+	
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
+	}
+	
 	@Override
 	public String toString() {
 		return "Funcionario [registro=" + registro + ", nome=" + nome + ", sexo=" + sexo + ", nascimento=" + nascimento

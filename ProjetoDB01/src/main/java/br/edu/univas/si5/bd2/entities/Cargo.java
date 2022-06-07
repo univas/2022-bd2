@@ -1,10 +1,13 @@
 package br.edu.univas.si5.bd2.entities;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,6 +26,9 @@ public class Cargo {
 
 	@Enumerated(EnumType.ORDINAL)
 	private TipoCargo type;
+	
+	@OneToMany(mappedBy="cargo") //o padrão é LAZY
+	private Set<Funcionario> funcionarios;
 
 	public Cargo() {
 	}
@@ -57,6 +63,14 @@ public class Cargo {
 
 	public void setType(TipoCargo type) {
 		this.type = type;
+	}
+	
+	public Set<Funcionario> getFuncionarios() {
+		return funcionarios;
+	}
+	
+	public void setFuncionarios(Set<Funcionario> funcionarios) {
+		this.funcionarios = funcionarios;
 	}
 
 	@Override
