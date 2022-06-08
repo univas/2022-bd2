@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -27,7 +28,7 @@ public class Cargo {
 	@Enumerated(EnumType.ORDINAL)
 	private TipoCargo type;
 	
-	@OneToMany(mappedBy="cargo") //o padrão é LAZY
+	@OneToMany(mappedBy="cargo", fetch=FetchType.EAGER) //o padrão é LAZY
 	private Set<Funcionario> funcionarios;
 
 	public Cargo() {

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,12 +30,12 @@ public class Funcionario implements Serializable {
 	@Transient
 	private int idade;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USUARIO_FK")
 	private Usuario usuario;
-	
-	@ManyToOne //o fetch padrão é EAGER
-	@JoinColumn(name="CARGO_FK")
+
+	@ManyToOne // o fetch padrão é EAGER
+	@JoinColumn(name = "CARGO_FK")
 	private Cargo cargo;
 
 	public Funcionario() {
@@ -79,11 +80,11 @@ public class Funcionario implements Serializable {
 	public void setIdade(int idade) {
 		this.idade = idade;
 	}
-	
+
 	public Usuario getUsuario() {
 		return usuario;
 	}
-	
+
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
@@ -91,11 +92,11 @@ public class Funcionario implements Serializable {
 	public Cargo getCargo() {
 		return cargo;
 	}
-	
+
 	public void setCargo(Cargo cargo) {
 		this.cargo = cargo;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Funcionario [registro=" + registro + ", nome=" + nome + ", sexo=" + sexo + ", nascimento=" + nascimento
